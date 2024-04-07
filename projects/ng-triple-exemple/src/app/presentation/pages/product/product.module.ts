@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ProductComponent } from './product.component';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SharedModule } from '../../../_shared/shared.module';
+import { LoadingModule } from '../../components/loading/loading.module';
+import { ErrorModule } from '../../components/error/error.module';
 
 const routes: Routes = [{ path: '', component: ProductComponent }];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
+  imports: [CommonModule, RouterModule.forChild(routes), LoadingModule, ErrorModule],
   declarations: [ProductComponent]
 })
 export class ProductModule {}
