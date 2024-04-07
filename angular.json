@@ -24,7 +24,10 @@
             "tsConfig": "projects/ng-triple-exemple/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["projects/ng-triple-exemple/src/favicon.ico", "projects/ng-triple-exemple/src/assets"],
-            "styles": ["projects/ng-triple-exemple/src/styles.scss"],
+            "styles": [
+              "projects/ng-triple-exemple/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
             "scripts": []
           },
           "configurations": {

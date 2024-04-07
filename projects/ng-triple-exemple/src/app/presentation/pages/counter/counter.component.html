@@ -1,28 +1,25 @@
-<section class="align-center" *ngIf="!loading && !error">
+<section class="text-center my-4">
+  <button type="button" class="btn btn-info" (click)="loadData()">Reload</button>
+</section>
+
+<section class="text-center my-4" *ngIf="!loading && !error">
   <div>
     <h2>Counter: {{ data }}</h2>
-
-    <div>
-      <button (click)="increment()">+</button>
-      <button (click)="decrement()">-</button>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-primary" (click)="increment()">+</button>
+      <button type="button" class="btn btn-secondary" (click)="decrement()">-</button>
     </div>
   </div>
 </section>
 
-<section class="align-center" *ngIf="error">
+<section class="text-center my-4" *ngIf="error">
   <div>
     <h5>Error: {{ error }}</h5>
   </div>
 </section>
 
-<section class="align-center" *ngIf="loading">
+<section class="text-center my-4" *ngIf="loading">
   <div>
     <h2>Loading...</h2>
   </div>
-</section>
-
-<section class="align-center">
-  <br />
-  <br />
-  <button (click)="loadData()">Reload</button>
 </section>
