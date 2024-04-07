@@ -1,7 +1,7 @@
 {
   "name": "ngx-triple-ssp",
   "description": "ngx-triple-segmented-state-pattern",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "peerDependencies": {
     "@angular/common": "^16.2.0",
     "@angular/core": "^16.2.0"
