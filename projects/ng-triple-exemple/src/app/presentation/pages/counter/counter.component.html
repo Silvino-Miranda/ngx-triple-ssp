@@ -12,14 +12,6 @@
   </div>
 </section>
 
-<section class="text-center my-4" *ngIf="error">
-  <div>
-    <h5>Error: {{ error }}</h5>
-  </div>
-</section>
+<app-error [error]="error"></app-error>
 
-<section class="text-center my-4" *ngIf="loading">
-  <div>
-    <h2>Loading...</h2>
-  </div>
-</section>
+<app-loading [loading]="loading"></app-loading>

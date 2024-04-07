@@ -1,3 +1,32 @@
-<p>
-  product works!
-</p>
+<section class="text-center my-4">
+  <button type="button" class="btn btn-info" (click)="loadData()">Reload</button>
+</section>
+
+<section class="text-center my-4" *ngIf="!loading && !error">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Preço</th>
+        <th>Cor</th>
+        <th>Disponível</th>
+        <th>Avaliação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of data">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency : 'BRL' }}</td>
+        <td>{{ product.color }}</td>
+        <td>{{ product.isAvailable ? 'Sim' : 'Não' }}</td>
+        <td>{{ product.rating }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<app-error [error]="error"></app-error>
+
+<app-loading [loading]="loading"></app-loading>
