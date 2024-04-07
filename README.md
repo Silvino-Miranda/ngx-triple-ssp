@@ -1,27 +1,134 @@
-# NgxTripleSsp
+# ngx-triple-ssp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.13.
+O `ngx-triple-ssp` é um pacote Angular que implementa o padrão Triple (State, Success, Error) para gerenciamento de estado de forma eficiente e reativa, facilitando a construção de interfaces de usuário dinâmicas e responsivas.
 
-## Development server
+## Características
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Gerenciamento de Estado**: Simplifica o gerenciamento de estados de carregamento, sucesso e erro em aplicações Angular.
+- **Integração com RxJS**: Utiliza observáveis para uma abordagem reativa ao estado da UI.
+- **Facilidade de Uso**: Projetado para ser facilmente integrado e utilizado em projetos Angular existentes.
 
-## Code scaffolding
+## Instalação
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Para instalar o `ngx-triple-ssp`, execute o seguinte comando no seu terminal:
 
-## Build
+```bash
+npm install ngx-triple-ssp
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Uso
 
-## Running unit tests
+Após a instalação, você pode utilizar o `TripleComponent` para gerenciar estados em seus componentes Angular. Aqui está um exemplo básico de como utilizar:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { CounterService } from './_shared/counter.service';
+import { NgxTripleSspComponent } from 'ngx-triple-ssp';
 
-## Running end-to-end tests
+@Component({
+  selector: 'app-counter',
+  templateUrl: './counter.component.html',
+  styleUrls: ['./counter.component.scss']
+})
+export class CounterComponent extends NgxTripleSspComponent<number> implements OnInit {
+  constructor(private counterService: CounterService) {
+    super(0);
+  }
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+  async ngOnInit() {
+    await this.loadData();
+  }
 
-## Further help
+  async loadData() {
+    this.setError(null);
+    this.setLoading(true);
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+    try {
+      const data = await this.counterService.loadData();
+      this.setData(data);
+    } catch (error) {
+      this.setError(error);
+    } finally {
+      this.setLoading(false);
+    }
+  }
+
+  increment() {
+    if (this.data !== null) {
+      let data = this.data;
+      data++;
+
+      this.setData(data);
+    }
+  }
+
+  decrement() {
+    if (this.data !== null) {
+      let data = this.data;
+      data--;
+
+      this.setData(data);
+    }
+  }
+
+  protected override updateUI(): void {
+    if (this.loading) {
+      console.log('Loading...');
+    } else if (this.error) {
+      console.error('Error:', this.error);
+    } else {
+      console.log('Data:', this.data);
+    }
+  }
+}
+
+```
+
+### Template de Exemplo
+
+Utilize o template a seguir para exibir os estados de carregamento, sucesso e erro:
+
+```html
+<section class="align-center" *ngIf="!loading && !error">
+  <div>
+    <h2>Counter: {{ data }}</h2>
+
+    <div>
+      <button (click)="increment()">+</button>
+      <button (click)="decrement()">-</button>
+    </div>
+  </div>
+</section>
+
+<section class="align-center" *ngIf="error">
+  <div>
+    <h5>Error: {{ error }}</h5>
+  </div>
+</section>
+
+<section class="align-center" *ngIf="loading">
+  <div>
+    <h2>Loading...</h2>
+  </div>
+</section>
+
+<section class="align-center">
+  <br />
+  <br />
+  <button (click)="loadData()">Reload</button>
+</section>
+```
+
+[Exemplo completo no GitHub](https://github.com/Silvino-Miranda/ngx-triple-ssp/tree/master/projects/ng-triple-exemple)
+
+
+## Contribuições
+
+Contribuições são bem-vindas! Se você quiser contribuir para o `ngx-triple-ssp`, por favor envie um pull request.
+
+## Licença
+
+O pacote `ngx-triple-ssp` é licenciado sob a [MIT License](https://opensource.org/licenses/MIT).
+
+---
+

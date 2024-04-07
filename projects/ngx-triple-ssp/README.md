@@ -119,6 +119,9 @@ Utilize o template a seguir para exibir os estados de carregamento, sucesso e er
 </section>
 ```
 
+[Exemplo completo no GitHub](https://github.com/Silvino-Miranda/ngx-triple-ssp/tree/master/projects/ng-triple-exemple)
+
+
 ## Contribuições
 
 Contribuições são bem-vindas! Se você quiser contribuir para o `ngx-triple-ssp`, por favor envie um pull request.
