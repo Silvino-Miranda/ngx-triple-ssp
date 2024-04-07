@@ -1,0 +1,28 @@
+<section class="align-center" *ngIf="!loading && !error">
+  <div>
+    <h2>Counter: {{ data }}</h2>
+
+    <div>
+      <button (click)="increment()">+</button>
+      <button (click)="decrement()">-</button>
+    </div>
+  </div>
+</section>
+
+<section class="align-center" *ngIf="error">
+  <div>
+    <h5>Error: {{ error }}</h5>
+  </div>
+</section>
+
+<section class="align-center" *ngIf="loading">
+  <div>
+    <h2>Loading...</h2>
+  </div>
+</section>
+
+<section class="align-center">
+  <br />
+  <br />
+  <button (click)="loadData()">Reload</button>
+</section>
