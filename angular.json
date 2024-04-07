@@ -3,5 +3,126 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "ng-triple-exemple": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/ng-triple-exemple",
+      "sourceRoot": "projects/ng-triple-exemple/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ng-triple-exemple",
+            "index": "projects/ng-triple-exemple/src/index.html",
+            "main": "projects/ng-triple-exemple/src/main.ts",
+            "polyfills": ["zone.js"],
+            "tsConfig": "projects/ng-triple-exemple/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["projects/ng-triple-exemple/src/favicon.ico", "projects/ng-triple-exemple/src/assets"],
+            "styles": ["projects/ng-triple-exemple/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ng-triple-exemple:build:production"
+            },
+            "development": {
+              "browserTarget": "ng-triple-exemple:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ng-triple-exemple:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "tsConfig": "projects/ng-triple-exemple/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": ["projects/ng-triple-exemple/src/favicon.ico", "projects/ng-triple-exemple/src/assets"],
+            "styles": ["projects/ng-triple-exemple/src/styles.scss"],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "ngx-triple-ssp": {
+      "projectType": "library",
+      "root": "projects/ngx-triple-ssp",
+      "sourceRoot": "projects/ngx-triple-ssp/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-triple-ssp/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-triple-ssp/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-triple-ssp/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ngx-triple-ssp/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "a110607c-1757-4d5e-bf2d-7e3b5a4ae3a2"
   }
 }
