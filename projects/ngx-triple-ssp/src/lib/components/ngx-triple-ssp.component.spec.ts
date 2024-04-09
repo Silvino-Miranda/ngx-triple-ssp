@@ -35,7 +35,7 @@ describe('NgxTripleSspComponent', () => {
 
   it('should set loading', () => {
     component.setLoading(true);
-    expect(component.loading).toBeTrue();
+    expect(component.isLoading).toBeTrue();
     // expect(component.updateUI).toHaveBeenCalled();
   });
 

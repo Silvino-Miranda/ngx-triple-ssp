@@ -1,5 +1,5 @@
 export abstract class NgxTripleSspComponent<T> {
-  private _loading: boolean = false;
+  private _isLoading: boolean = false;
   private _error: any = null;
   private _dataSource: T | null = null;
 
@@ -7,8 +7,8 @@ export abstract class NgxTripleSspComponent<T> {
     this.setDataSource(dataSource);
   }
 
-  get loading(): boolean {
-    return this._loading;
+  get isLoading(): boolean {
+    return this._isLoading;
   }
 
   get error(): any {
@@ -20,7 +20,7 @@ export abstract class NgxTripleSspComponent<T> {
   }
 
   protected setLoading(loading: boolean): void {
-    this._loading = loading;
+    this._isLoading = loading;
   }
 
   protected setError(error: any): void {
@@ -31,6 +31,6 @@ export abstract class NgxTripleSspComponent<T> {
     this._dataSource = dataSource;
   }
 
-  protected abstract loadData(): void;
-  protected abstract goBack(): Promise<void>;
+  protected abstract loadData(): Promise<void> | void;
+  protected abstract goBack(): Promise<void> | void;
 }
