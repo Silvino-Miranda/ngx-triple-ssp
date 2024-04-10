@@ -2,7 +2,7 @@
   <button type="button" class="btn btn-info" (click)="loadData()">Reload</button>
 </section>
 
-<section class="text-center my-4" *ngIf="!loading && !error">
+<section class="text-center my-4" *ngIf="!isLoading && !error">
   <table class="table table-hover table-bordered">
     <thead>
       <tr>
@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of data">
+      <tr *ngFor="let product of dataSource">
         <td>{{ product.id }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.price | currency : 'BRL' }}</td>
@@ -29,4 +29,4 @@
 
 <app-error [error]="error"></app-error>
 
-<app-loading [loading]="loading"></app-loading>
+<app-loading [loading]="isLoading"></app-loading>

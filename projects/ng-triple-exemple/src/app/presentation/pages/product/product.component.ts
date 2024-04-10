@@ -23,7 +23,7 @@ export class ProductComponent extends NgxTripleSspComponent<Array<Product>> impl
 
     try {
       const data = await this.productService.loadData();
-      this.setData(data);
+      this.setDataSource(data);
     } catch (error) {
       this.setError(error);
     } finally {
@@ -31,13 +31,17 @@ export class ProductComponent extends NgxTripleSspComponent<Array<Product>> impl
     }
   }
 
-  protected override updateUI(): void {
-    if (this.loading) {
+  protected updateUI(): void {
+    if (this.isLoading) {
       console.log('Loading...');
     } else if (this.error) {
       console.error('Error:', this.error);
     } else {
-      console.log('Data:', this.data);
+      console.log('Data:', this.dataSource);
     }
+  }
+
+  protected override goBack(): void | Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }

@@ -22,7 +22,7 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
 
     try {
       const data = await this.counterService.loadData();
-      this.setData(data);
+      this.setDataSource(data);
     } catch (error) {
       this.setError(error);
     } finally {
@@ -31,30 +31,34 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
   }
 
   increment() {
-    if (this.data !== null) {
-      let data = this.data;
+    if (this.dataSource !== null) {
+      let data = this.dataSource;
       data++;
 
-      this.setData(data);
+      this.setDataSource(data);
     }
   }
 
   decrement() {
-    if (this.data !== null) {
-      let data = this.data;
+    if (this.dataSource !== null) {
+      let data = this.dataSource;
       data--;
 
-      this.setData(data);
+      this.setDataSource(data);
     }
   }
 
-  protected override updateUI(): void {
-    if (this.loading) {
+  protected override goBack(): void | Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  protected updateUI(): void {
+    if (this.isLoading) {
       console.log('Loading...');
     } else if (this.error) {
       console.error('Error:', this.error);
     } else {
-      console.log('Data:', this.data);
+      console.log('Data:', this.dataSource);
     }
   }
 }
