@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build ng-triple-exemple",
+    "build:lib": "ng build ngx-triple-ssp",
+    "publish:lib": "cd dist/ngx-triple-ssp && npm publish",
     "watch": "ng build --watch --configuration development",
     "build:wba": "ng build --configuration production --aot --base-href / --stats-json",
     "build:analyzer": "npx webpack-bundle-analyzer dist/opcoes/stats.json",
