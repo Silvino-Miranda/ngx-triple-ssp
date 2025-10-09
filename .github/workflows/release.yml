@@ -1,0 +1,73 @@
+name: Release Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Create Release and Publish
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:docker
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Get version from tag
+        id: get-version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION"
+
+      - name: Publish to npm
+        run: |
+          cd dist/ngx-triple-ssp
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ## ngx-triple-ssp v${{ steps.get-version.outputs.version }}
+
+            Angular Triple State Pattern library supporting Angular 16.2+ to 20+
+
+            ### Features
+            - ✅ Triple State Management (Loading, Success, Error)
+            - ✅ Angular 16.2+ to 20+ compatibility
+            - ✅ RxJS 7.8+ and 8.0+ support
+            - ✅ TypeScript support
+
+            ### Installation
+            ```bash
+            npm install ngx-triple-ssp@${{ steps.get-version.outputs.version }}
+            ```
+
+            ### Documentation
+            Visit [npm package](https://www.npmjs.com/package/ngx-triple-ssp) for usage examples.
+          draft: false
+          prerelease: false

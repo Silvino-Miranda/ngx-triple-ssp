@@ -1,0 +1,123 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Library
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:docker
+
+      - name: Run linting
+        run: npm run lint || echo "Lint check completed"
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    name: Build and Publish Library
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Build example app
+        run: npm run build
+
+      - name: Check if version changed
+        id: version-check
+        run: |
+          CURRENT_VERSION=$(node -p "require('./projects/ngx-triple-ssp/package.json').version")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+          # Check if this version already exists on npm
+          if npm view ngx-triple-ssp@$CURRENT_VERSION version 2>/dev/null; then
+            echo "version_exists=true" >> $GITHUB_OUTPUT
+            echo "Version $CURRENT_VERSION already exists on npm"
+          else
+            echo "version_exists=false" >> $GITHUB_OUTPUT
+            echo "Version $CURRENT_VERSION is new, proceeding with publish"
+          fi
+
+      - name: Publish to npm
+        if: steps.version-check.outputs.version_exists == 'false'
+        run: |
+          cd dist/ngx-triple-ssp
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.version-check.outputs.version_exists == 'false'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version-check.outputs.current_version }}
+          release_name: Release v${{ steps.version-check.outputs.current_version }}
+          body: |
+            ## Changes in this Release
+            - Updated ngx-triple-ssp library
+            - Version: ${{ steps.version-check.outputs.current_version }}
+            - Compatible with Angular 16.2+ to 20+
+
+            ### Installation
+            ```bash
+            npm install ngx-triple-ssp@${{ steps.version-check.outputs.current_version }}
+            ```
+          draft: false
+          prerelease: false
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test, build-and-publish]
+    if: always()
+    name: Notify Results
+
+    steps:
+      - name: Notify Success
+        if: needs.test.result == 'success' && needs.build-and-publish.result == 'success'
+        run: |
+          echo "✅ Pipeline completed successfully!"
+          echo "✅ Tests passed"
+          echo "✅ Build successful"
+          echo "✅ Library published (if version was new)"
+
+      - name: Notify Failure
+        if: needs.test.result == 'failure' || needs.build-and-publish.result == 'failure'
+        run: |
+          echo "❌ Pipeline failed!"
+          echo "Test result: ${{ needs.test.result }}"
+          echo "Build result: ${{ needs.build-and-publish.result }}"

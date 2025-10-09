@@ -7,6 +7,17 @@ O `ngx-triple-ssp` é um pacote Angular que implementa o padrão Triple (State, 
 - **Gerenciamento de Estado**: Simplifica o gerenciamento de estados de carregamento, sucesso e erro em aplicações Angular.
 - **Integração com RxJS**: Utiliza observáveis para uma abordagem reativa ao estado da UI.
 - **Facilidade de Uso**: Projetado para ser facilmente integrado e utilizado em projetos Angular existentes.
+- **Ampla Compatibilidade**: Suporta Angular 16.2+ até Angular 20+
+
+## Compatibilidade
+
+| Versão do Angular | Versão ngx-triple-ssp | Status |
+|-------------------|----------------------|--------|
+| 16.2.x            | 0.2.0+              | ✅ Suportado |
+| 17.x              | 0.2.0+              | ✅ Suportado |
+| 18.x              | 0.2.0+              | ✅ Suportado |
+| 19.x              | 0.2.0+              | ✅ Suportado |
+| 20.x              | 0.2.0+              | ✅ Suportado |
 
 ## Instalação
 
@@ -45,7 +56,7 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
 
     try {
       const data = await this.counterService.loadData();
-      this.setData(data);
+      this.setDataSource(data);
     } catch (error) {
       this.setError(error);
     } finally {
@@ -54,30 +65,34 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
   }
 
   increment() {
-    if (this.data !== null) {
-      let data = this.data;
+    if (this.dataSource !== null) {
+      let data = this.dataSource;
       data++;
 
-      this.setData(data);
+      this.setDataSource(data);
     }
   }
 
   decrement() {
-    if (this.data !== null) {
-      let data = this.data;
+    if (this.dataSource !== null) {
+      let data = this.dataSource;
       data--;
 
-      this.setData(data);
+      this.setDataSource(data);
     }
   }
 
-  protected override updateUI(): void {
-    if (this.loading) {
+  protected override goBack(): void | Promise<void> {
+    // Implementar navegação de volta
+  }
+
+  protected updateUI(): void {
+    if (this.isLoading) {
       console.log('Loading...');
     } else if (this.error) {
       console.error('Error:', this.error);
     } else {
-      console.log('Data:', this.data);
+      console.log('Data:', this.dataSource);
     }
   }
 }
@@ -89,9 +104,9 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
 Utilize o template a seguir para exibir os estados de carregamento, sucesso e erro:
 
 ```html
-<section class="align-center" *ngIf="!loading && !error">
+<section class="align-center" *ngIf="!isLoading && !error">
   <div>
-    <h2>Counter: {{ data }}</h2>
+    <h2>Counter: {{ dataSource }}</h2>
 
     <div>
       <button (click)="increment()">+</button>
@@ -106,7 +121,7 @@ Utilize o template a seguir para exibir os estados de carregamento, sucesso e er
   </div>
 </section>
 
-<section class="align-center" *ngIf="loading">
+<section class="align-center" *ngIf="isLoading">
   <div>
     <h2>Loading...</h2>
   </div>
