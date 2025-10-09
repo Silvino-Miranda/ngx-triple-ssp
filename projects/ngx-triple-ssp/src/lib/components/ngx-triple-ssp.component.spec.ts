@@ -17,6 +17,14 @@ class MockComponent extends NgxTripleSspComponent<number> {
     super.setDataSource(data);
   }
 
+  protected loadData(): Promise<void> | void {
+    // Mock implementation
+  }
+
+  protected goBack(): Promise<void> | void {
+    // Mock implementation
+  }
+
   updateUI(): void {}
 }
 
