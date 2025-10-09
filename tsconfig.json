@@ -12,7 +12,7 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
-      "ngx-triple-ssp": ["dist/ngx-triple-ssp"]
+      "ngx-triple-ssp": ["projects/ngx-triple-ssp/src/public-api.ts"]
     },
     "declaration": false,
     "downlevelIteration": true,
