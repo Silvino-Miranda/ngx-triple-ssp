@@ -32,16 +32,12 @@ export class ProductComponent extends NgxTripleSspComponent<Array<Product>> impl
   }
 
   protected updateUI(): void {
-    if (this.isLoading) {
+    if (this.isLoading()) {
       console.log('Loading...');
-    } else if (this.error) {
-      console.error('Error:', this.error);
+    } else if (this.error()) {
+      console.error('Error:', this.error());
     } else {
-      console.log('Data:', this.dataSource);
+      console.log('Data:', this.dataSource());
     }
-  }
-
-  protected override goBack(): void | Promise<void> {
-    throw new Error('Method not implemented.');
   }
 }
