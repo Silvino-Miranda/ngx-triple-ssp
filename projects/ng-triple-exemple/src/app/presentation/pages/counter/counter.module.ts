@@ -8,8 +8,10 @@ import { ErrorModule } from '../../components/error/error.module';
 
 const routes: Routes = [{ path: '', component: CounterComponent }];
 
+import { NgxTripleDirective } from 'ngx-triple-ssp';
+
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), LoadingModule, ErrorModule],
+  imports: [CommonModule, RouterModule.forChild(routes), LoadingModule, ErrorModule, NgxTripleDirective],
   declarations: [CounterComponent]
 })
 export class CounterModule {}

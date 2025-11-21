@@ -2,16 +2,18 @@
   <button type="button" class="btn btn-info" (click)="loadData()">Reload</button>
 </section>
 
-<section class="text-center my-4" *ngIf="!isLoading && !error">
-  <div>
-    <h2>Counter: {{ dataSource }}</h2>
-    <div class="btn-group" role="group">
-      <button type="button" class="btn btn-primary" (click)="increment()">+</button>
-      <button type="button" class="btn btn-secondary" (click)="decrement()">-</button>
+<ng-container *ngxTriple="this; let data; let error = error; let loading = loading">
+  <section class="text-center my-4" *ngIf="data !== null">
+    <div>
+      <h2>Counter: {{ data }}</h2>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-primary" (click)="increment()">+</button>
+        <button type="button" class="btn btn-secondary" (click)="decrement()">-</button>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<app-error [error]="error"></app-error>
+  <app-error [error]="error"></app-error>
 
-<app-loading [loading]="isLoading"></app-loading>
+  <app-loading [loading]="loading"></app-loading>
+</ng-container>

@@ -31,8 +31,8 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
   }
 
   increment() {
-    if (this.dataSource !== null) {
-      let data = this.dataSource;
+    if (this.dataSource() !== null) {
+      let data = this.dataSource()!;
       data++;
 
       this.setDataSource(data);
@@ -40,25 +40,21 @@ export class CounterComponent extends NgxTripleSspComponent<number> implements O
   }
 
   decrement() {
-    if (this.dataSource !== null) {
-      let data = this.dataSource;
+    if (this.dataSource() !== null) {
+      let data = this.dataSource()!;
       data--;
 
       this.setDataSource(data);
     }
   }
 
-  protected override goBack(): void | Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-
   protected updateUI(): void {
-    if (this.isLoading) {
+    if (this.isLoading()) {
       console.log('Loading...');
-    } else if (this.error) {
-      console.error('Error:', this.error);
+    } else if (this.error()) {
+      console.error('Error:', this.error());
     } else {
-      console.log('Data:', this.dataSource);
+      console.log('Data:', this.dataSource());
     }
   }
 }
