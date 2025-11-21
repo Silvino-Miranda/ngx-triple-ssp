@@ -8,3 +8,4 @@ export * from './lib/interfaces/crud-delete';
 export * from './lib/interfaces/crud-get-all';
 export * from './lib/interfaces/crud-get-by-id';
 export * from './lib/interfaces/crud-update';
+export * from './lib/directives/ngx-triple.directive';
